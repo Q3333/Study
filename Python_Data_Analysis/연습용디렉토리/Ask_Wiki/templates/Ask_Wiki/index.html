@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}
+제목임
+{% endblock %}
+{% block body %}
+제목 :
+{{ title }} 
+<hr> 
+<br>
+요약 : 
+{{ summary }}
+<hr>
+<br>
+<!-- 섹션1 -생애 : 
+<br>
+{% for section in sections_1 %}
+서브섹션 <br>
+{{section}}
+{% endfor %}
+
+<hr>
+<br> -->
+섹션2 -역사 : 
+<br>
+{{sections_2}}
+<hr>
+<br>
+전체 :
+{{ total }}
+
+{% endblock %}

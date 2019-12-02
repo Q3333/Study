@@ -154,3 +154,29 @@ text = page_py.text
 
 mecab과 코모란은 환경때문에 실습을 못 하였다.
 
+
+
+## 4. 코모란
+
+
+
+```python
+from konlpy.tag import Komoran
+
+komoran = Komoran()
+ 
+komoran.morphs    #형태소 분석
+komoran.nouns     #명사 분석
+komoran.pos       #형태소 분석 태깅
+ 
+# 사용예시
+print(komoran.morphs(u'우왕 코모란도 오픈소스가 되었어요'))
+#['우왕', '코모란', '도', '오픈소스', '가', '되', '었', '어요']
+ 
+print(komoran.nouns(u'오픈소스에 관심 많은 멋진 개발자님들!'))
+#['오픈소스', '관심', '개발자']
+ 
+print(komoran.pos(u'혹시 바람과 함께 사라지다 봤어?'))
+#[('혹시', 'MAG'), ('바람과 함께 사라지다', 'NNP'), ('보', 'VV'), ('았', 'EP'), ('어', 'EF'), ('?', 'SF')]
+```
+
