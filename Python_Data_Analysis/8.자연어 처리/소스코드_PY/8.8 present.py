@@ -146,7 +146,55 @@ wordcloud = WordCloud(font_path='c:/Windows/Fonts/malgun.ttf',
 
 default_colors = wordcloud.to_array()
 
+
+
 plt.figure(figsize=(12,12))
 plt.imshow(wordcloud.recolor(color_func=image_colors),interpolation="bilinear")
 plt.axis("off")
 plt.show()
+
+
+import gensim
+from gensim.models import word2vec
+
+
+
+twitter = Twitter()
+results = []
+lines = present_candi_text
+
+for line in lines:
+    malist = twitter.pos(line, norm=True, stem=True)
+    r = []
+
+    for word in malist:
+        if not word[1] in ["Josa", "Eomi", "Punctuation"]:
+            r.append(word[0])
+
+    r1 = (" ".join(r)).strip()
+    results.append(r1)
+    print(r1)
+
+
+
+data_file = 'pres_girl.data'
+with open(data_file, 'w', encoding='utf-8') as fp:
+    fp.write("\n".join(results))
+
+
+data = word2vec.LineSentence(data_file)
+model = word2vec.Word2Vec(data,size=200,window=10,hs=1,min_count=2,sg=1)
+
+model.save('pres_girl.model')
+
+
+
+model = word2vec.Word2Vec.load("pres_gilr.model")
+
+model.most_similar(positive=['선물'])
+
+model.most_similar(positive=['여자친구'])
+
+model.most_similar(positive=['100일','선물'])
+
+model.most_similar(positive=['100일'], negative=['선물'])
