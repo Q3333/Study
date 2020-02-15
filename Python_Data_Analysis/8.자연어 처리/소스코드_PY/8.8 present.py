@@ -2,7 +2,7 @@ import pandas as pandas
 import numpy as np
 
 import platform
-import matplotlib.pyplot as platform
+import matplotlib.pyplot as plt
 
 %matplotlib inline
 
@@ -109,6 +109,10 @@ plt.show()
 
 
 ### 2일차
+from wordcloud import WordCloud, STOPWORDS
+from PIL import Image
+
+
 data = ko.vocab().most_common(300)
 
 wordcloud = WordCloud(font_path='c:/Windows/Fonts/malgun.ttf',
@@ -118,5 +122,31 @@ wordcloud = WordCloud(font_path='c:/Windows/Fonts/malgun.ttf',
                       ).generate_from_frequencies(dict(data))
 plt.figure(figsize=(16,8))
 plt.imshow(wordcloud)
+plt.axis("off")
+plt.show()
+
+
+mask = np.array(Image.open('../../data/09. heart.jpg'))
+
+from wordcloud import ImageColorGenerator
+
+image_colors = ImageColorGenerator(mask)
+
+
+
+data = ko.vocab().most_common(300)
+
+wordcloud = WordCloud(font_path='c:/Windows/Fonts/malgun.ttf',
+                      relative_scaling = 0.1,
+                      mask=mask,
+                      background_color='white',
+                      min_font_size=1,
+                      max_font_size=100
+                      ).generate_from_frequencies(dict(data))
+
+default_colors = wordcloud.to_array()
+
+plt.figure(figsize=(12,12))
+plt.imshow(wordcloud.recolor(color_func=image_colors),interpolation="bilinear")
 plt.axis("off")
 plt.show()
