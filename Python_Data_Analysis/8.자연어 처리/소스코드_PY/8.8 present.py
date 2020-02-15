@@ -106,3 +106,17 @@ ko.vocab().most_common(50)
 plt.figure(figsize=(15,6))
 ko.plot(50)
 plt.show()
+
+
+### 2일차
+data = ko.vocab().most_common(300)
+
+wordcloud = WordCloud(font_path='c:/Windows/Fonts/malgun.ttf',
+                      relative_scaling = 0.2,
+                      #stopwords=STOPWORDS,
+                      background_color='white',
+                      ).generate_from_frequencies(dict(data))
+plt.figure(figsize=(16,8))
+plt.imshow(wordcloud)
+plt.axis("off")
+plt.show()
