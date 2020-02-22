@@ -48,7 +48,6 @@ train = [('손흥민 지렸다', 'pos'),
          ('무관민새기 또 강등따리팀 패고 손맘충년들 희망고문하는 거 보소 잔인한 새기ㅜㅜ','neg'),
          ('오늘도 못했는데 상대수비수 실책으로 세탁','neg'),
          ]
-         
 
 train
 # 학습 데이터 생성
@@ -80,16 +79,134 @@ classifier.show_most_informative_features()
 
 
 #### 테스트 과정
+
 def term_exists(doc):
     return {word: (word in set(doc)) for word in tokens}
 
+### 테스트 1
+
+test_sentence1 = '이것이 바로 공격수의 능력이다 멋있다 손흥민!! 최고!! ^^'
+
+test_docs1 = tokenize(test_sentence1)
+
+test_sent_features1 = term_exists(test_docs1)
+classifier.classify(test_sent_features1)
+
+#test_sent_features1
+
+### 테스트 2
+
+test_sentence2 = '두 골을 넣긴 했지만.. 요즘 폼이 너무 안좋아 보인다'
+
+test_docs2 = tokenize(test_sentence2)
+
+test_sent_features2 = term_exists(test_docs2)
+classifier.classify(test_sent_features2)
+
+#test_sent_features2
+
+
 ### 테스트 3
 
-test_sentence3 = '난 고양이가 좋아'
+test_sentence3 = 'pk를 지저분하게 차지마라 좀'
 
 test_docs3 = tokenize(test_sentence3)
 
 test_sent_features3 = term_exists(test_docs3)
 classifier.classify(test_sent_features3)
 
-test_sent_features3
+#test_sent_features3
+
+
+### 테스트 4
+
+test_sentence4 = '졸라 못하다가 막판에 한 건 ㅋㅋㅋ'
+
+test_docs4 = tokenize(test_sentence4)
+
+test_sent_features4 = term_exists(test_docs4)
+classifier.classify(test_sent_features4)
+
+#test_sent_features4
+
+
+### 테스트 5
+
+test_sentence5 = '오늘 진짜 대박!!!!!'
+
+test_docs5 = tokenize(test_sentence5)
+
+test_sent_features5 = term_exists(test_docs5)
+classifier.classify(test_sent_features5)
+
+#test_sent_features5
+
+
+
+
+############ 크롤링 하는 과정
+
+from selenium import webdriver
+import time
+url = 'https://sports.news.naver.com/news.nhn?oid=477&aid=0000232510&m_view=1&sort=LIKE'
+
+#웹 드라이버
+driver = webdriver.Chrome('./chromedriver.exe')
+driver.implicitly_wait(30)
+driver.get(url)
+
+#더보기 계속 클릭하기
+count = 0
+while True:
+    try:
+        더보기 = driver.find_element_by_css_selector('a.u_cbox_btn_more')
+        더보기.click()
+        time.sleep(1)
+        count = count + 1
+        if count > 100 :
+            break
+    except:
+        break
+
+
+
+#댓글추출
+contents = driver.find_elements_by_css_selector('span.u_cbox_contents')
+text_list = []
+
+for content in contents:
+    print(content.text)
+    text_list.append(content.text)
+
+#갯수 확인
+print(len(text_list))
+
+#리스트 확인
+print(text_list[0])
+
+#판정 결과 확인
+
+text_count = 0
+pos_count = 0
+neg_count = 0
+for i in text_list :
+    for_test_sentence = "'" + i + "'" 
+
+    for_test_docs = tokenize(for_test_sentence)
+
+    for_test_sent_features = term_exists(for_test_docs)
+    
+    print("'" + i + "' 의 긍부정 판정 결과는 " + classifier.classify(for_test_sent_features) + "입니다.")
+      
+    if classifier.classify(for_test_sent_features) == 'neg' :
+        neg_count = neg_count + 1
+    else :
+        pos_count = pos_count + 1
+        
+    text_count = text_count + 1
+    if text_count > 100 :
+        break
+
+#판정 결과 정리
+print("neg 표현의 갯수는 " + str(neg_count) + "개 입니다.")
+print("pos 표현의 갯수는 " + str(pos_count) + "개 입니다.")
