@@ -96,3 +96,5 @@ inplace=True는 CCTV_Seoul의 변수의 내용을 실제로 바꾸라는 옵션�
 
 
 
+## 2. 분석(1-1 pandas 기초에 이어서)
+
