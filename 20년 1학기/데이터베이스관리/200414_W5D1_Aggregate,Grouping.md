@@ -241,8 +241,9 @@ FROM 절 아래, 보통 제일 뒤에 쓴다.
 #### Using comparison operators 
 
 - on character attributes
-  - used to place restrictions on character-based attributes
-
+  
+- used to place restrictions on character-based attributes
+  
 - on dates
   - Date procedures are often more software-specific than other SQL procedures
 
@@ -428,7 +429,7 @@ GROUP BY의 결과에 적용되는 조건문
 
 #### 예시 - HAVING, GROUP BY
 
-![1586845855951](assets/1586845855951.png)
+![1586999278379](assets/1586999278379.png)
 
 
 
