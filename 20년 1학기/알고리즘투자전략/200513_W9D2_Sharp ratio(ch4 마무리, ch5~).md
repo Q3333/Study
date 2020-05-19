@@ -1,6 +1,6 @@
 
 
-# 200513_W9D2_Sharp ratio
+# 200513_W9D2_Sharp ratio(ch4 마무리, ch5~)
 
 
 
