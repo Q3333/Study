@@ -311,79 +311,99 @@ bargain_wine
 
 
 
-### 2.reviews DF의 country는 어떤 값들을 가지고 있나? (중복 값 제외)
+### 6.reviews DF의 description에서 tropical' , 'fruity 라는 설명을 포함한 와인들의 갯수를 구하시오
 
 ```python
+tropical = reviews.description.map(lambda p : 'tropical' in p).sum()
+fruity = reviews.description.map(lambda p : 'fruity' in p).sum()
 
+descriptor_counts = pd.Series([tropical, fruity], index =['tropical', 'fruity'] )
+
+descriptor_counts
 ```
 
 ```
-
-```
-
-
-
-### 2.reviews DF의 country는 어떤 값들을 가지고 있나? (중복 값 제외)
-
-```python
-
-```
-
-```
-
+tropical    3607
+fruity      9090
+dtype: int64
 ```
 
 
 
-### 2.reviews DF의 country는 어떤 값들을 가지고 있나? (중복 값 제외)
-
-```python
-
-```
-
-```
-
-```
+이 문제는 좀 어려워서 해설추가함
 
 
 
-### 2.reviews DF의 country는 어떤 값들을 가지고 있나? (중복 값 제외)
+![1623596332645](assets/1623596332645.png)
 
-```python
+map을 사용하면 해당 사진처럼 129970개의 True, False값을 return을 하게 되는데, 우리는 총 갯수가 필요한 것 이므로 sum으로 총 합을 구해준다. (True면 1, False면 0이기 때문에 True인 개수대로 합이 나옴)
 
-```
 
-```
 
-```
+그래서 각각 구한 3607, 9090이라는 숫자를 
+
+Series에 넣고 index로 이름을 붙여주면 끝
+
+
+
+### 7.reviews DF에서 95점이상 3 stars, 85점 이상 2  stars, 그 외 1 stars로 등급을 새로 정하되,  캐나다산 와인은 무조건 3 stars로 만들어라
 
 
 
 ```python
+def star_points(row):
+    
+    if row.points >= 95 :
+        row.points = 3
+    elif row.points >= 85 & row.points < 95 :
+        row.points = 2
+    else :
+        row.points = 1
+        
+    if row.country == "Canada" :
+        row.points = 3
+    return row
 
+star_ratings_df = reviews.apply(star_points, axis='columns')
+star_ratings = star_ratings_df.points
+
+print(star_ratings)
+star_ratings.value_counts()
 ```
 
 ```
+0         2
+1         2
+         ..
+129969    2
+129970    2
+Name: points, Length: 129971, dtype: int64
 
+2    127298
+3      2673
+Name: points, dtype: int64
 ```
 
 
+
+
+
+솔루션은 아래와 같다.
 
 ```python
+def stars(row):
+    if row.country == 'Canada':
+        return 3
+    elif row.points >= 95:
+        return 3
+    elif row.points >= 85:
+        return 2
+    else:
+        return 1
 
+star_ratings = reviews.apply(stars, axis='columns')
 ```
 
-```
-
-```
 
 
-
-```python
-
-```
-
-```
-
-```
-
+더 간결하게 짤 수 있는데, if문을 두개로 나눠서 길이 차이가 생긴 것 같다.
